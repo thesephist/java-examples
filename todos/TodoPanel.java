@@ -201,7 +201,5 @@ class TodoPanel extends JFrame {
         }
     }
 
-    // TODO: try adding a removeButton or an undoneButton
-
 }
 

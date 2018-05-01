@@ -1,4 +1,4 @@
-# Java Image Filters!
+# image-filter
 
 This is a project that contains basic file and buffered image IO as a simple Java demo / teaching tool.
 
