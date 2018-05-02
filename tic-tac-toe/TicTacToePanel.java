@@ -55,7 +55,7 @@ class TicTacToePanel extends JFrame {
             rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
             
             for (int j = 0; j < 3; j ++) {
-                rowPanel.add(boxes[j * 3 + j]);
+                rowPanel.add(boxes[i * 3 + j]);
             }
 
             gameBoardPanel.add(rowPanel);
