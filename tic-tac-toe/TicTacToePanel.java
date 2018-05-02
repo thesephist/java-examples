@@ -131,10 +131,12 @@ class TicTacToePanel extends JFrame {
     }
 
     private void undo() {
-        TicTacToeButton lastMarked = history.get(history.size() - 1);
-        history.remove(lastMarked);
-        lastMarked.clear();
-        switchTurn();
+        if (history.size() > 0) {
+            TicTacToeButton lastMarked = history.get(history.size() - 1);
+            history.remove(lastMarked);
+            lastMarked.clear();
+            switchTurn();
+        }
     }
 
     private void alert(String message) {
