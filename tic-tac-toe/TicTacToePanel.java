@@ -30,10 +30,6 @@ class TicTacToePanel extends JFrame {
     private ArrayList<TicTacToeButton> history = new ArrayList<TicTacToeButton>();
     private TicTacToeButton[] boxes = new TicTacToeButton[9];
 
-    private void log(String msg) {
-        System.out.println(msg);
-    }
-
     /**
      * Constuctor for the game window
      */
@@ -53,12 +49,11 @@ class TicTacToePanel extends JFrame {
         for (int i = 0; i < 3; i ++) {
             JPanel rowPanel = new JPanel();
             rowPanel.setLayout(new BoxLayout(rowPanel, BoxLayout.X_AXIS));
+            gameBoardPanel.add(rowPanel);
             
             for (int j = 0; j < 3; j ++) {
                 rowPanel.add(boxes[i * 3 + j]);
             }
-
-            gameBoardPanel.add(rowPanel);
         }
 
         // Make buttons and button panel
@@ -143,33 +138,52 @@ class TicTacToePanel extends JFrame {
         JOptionPane.showMessageDialog(null, message);
     }
 
-    private class TicTacToeButton extends JButton {
+    private class TicTacToeButton extends JPanel {
+
+        private JButton button = new JButton();
 
         public TicTacToeButton() {
-            super();
-            addActionListener(new ClickListener());
+            super(new BorderLayout());
+
+            button.setFont(new Font("Arial", Font.BOLD, 100));
+            button.addActionListener(new ClickListener());
+            add(button, BorderLayout.CENTER);
+        }
+
+        /**
+         * The literal number values returned here are not relevant,
+         *  as long as it is reasonably bigger than the font size,
+         *  since its container uses BoxLayout to stretch out the buttons
+         *  anyways. What's important here is that a constant width
+         *  and height are returned regardless of the content of the button.
+         *
+         * We need this to make sure the grid of 3x3 spaces is regular
+         *  at all times.
+         */
+        public Dimension getPreferredSize() {
+            return new Dimension(150, 150);
         }
 
         public void mark(Mark mark) {
             if (mark == Mark.X) {
-                setText("X");
+                button.setText("X");
             } else {
-                setText("O");
+                button.setText("O");
             }
 
             history.add(this);
         }
 
         public String getMark() {
-            return getText();
+            return button.getText();
         }
 
         private boolean isMarked() {
-            return !(getText().equals(""));
+            return !(button.getText().equals(""));
         }
 
         public void clear() {
-            setText("");
+            button.setText("");
         }
 
         private class ClickListener implements ActionListener {
