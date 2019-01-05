@@ -130,6 +130,72 @@ class Filter {
     }
 
     /**
+     * Re-expose the image on a log-scale of brightness
+     *  i.e. 3-6 is a bigger difference than 100-103. Outputs greyscale
+     *  but is faster than logExposure.
+     */
+    public static void logExposureGreyscale(ImageManager image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for (int x = 0; x < width; x ++) {
+            for (int y = 0; y < height; y ++) {
+                Color c = image.getColor(x, y);
+                double exposure = (
+                        c.getRed() + c.getGreen() + c.getBlue()
+                        ) / 3.0 / 255.0;
+                int logExposure = (int)(Math.sqrt(exposure) * 255);
+                image.setColor(
+                    x,
+                    y,
+                    new Color(
+                        logExposure,
+                        logExposure,
+                        logExposure
+                    )
+                );
+            }
+        }
+
+        image.write();
+    }
+
+    // Helper function for logExposure
+    public static int logExposeColor(int colorValue) {
+        double exposure = colorValue / 255.0;
+        int logExposure = (int) (Math.sqrt(exposure) * 255);
+        return logExposure;
+    }
+
+    /**
+     * Re-expose the image on a log-scale of brightness
+     *  i.e. 3-6 is a bigger difference than 100-103. Slower than
+     *  logExposureGreyscale but preserves color. This still needs work
+     *  to de-emphasize the greens, which is more exaggerated to the human eye.
+     */
+    public static void logExposure(ImageManager image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for (int x = 0; x < width; x ++) {
+            for (int y = 0; y < height; y ++) {
+                Color c = image.getColor(x, y);
+                image.setColor(
+                    x,
+                    y,
+                    new Color(
+                        Filter.logExposeColor(c.getRed()),
+                        Filter.logExposeColor(c.getGreen()),
+                        Filter.logExposeColor(c.getBlue())
+                    )
+                );
+            }
+        }
+
+        image.write();
+    }
+
+    /**
      * Flatten each RGB value to be either on or off. Full contrast.
      */
     public static void contrasty(ImageManager image) {
