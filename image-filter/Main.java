@@ -1,8 +1,8 @@
 class Main {
 
     public static void main(String[] args) {
-        ImageManager source = new ImageManager("./images/train.jpg");
-        ImageManager target = source.clone("out.jpg");
+        ImageManager source = new ImageManager("./images/input.jpg");
+        ImageManager target = source.clone("output.jpg");
 
         Filter.rotate(target, 25);
         Filter.scale(target, 1.3);
